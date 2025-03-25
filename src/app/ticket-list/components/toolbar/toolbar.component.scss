@@ -1,0 +1,45 @@
+$iconWidth: 40px;
+
+mat-toolbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+
+    .example-spacer {
+        flex: 1 1 auto;
+    }
+
+    .sidenav-toggle {
+        display: none;
+
+        padding: 0;
+        margin: 0px;
+        min-width: $iconWidth;
+
+        @media (max-width: 780px) {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        mat-icon {
+            font-size: 30px;
+            height: $iconWidth;
+            width: $iconWidth;
+            line-height: $iconWidth;
+        }
+    }
+
+    .app-icon-label-logo {
+        display: flex;
+        align-items: center;
+
+        .app-icon-logo {
+            margin-right: 10px;
+            width: 40px;
+            height: 40px;
+        }
+    }
+}

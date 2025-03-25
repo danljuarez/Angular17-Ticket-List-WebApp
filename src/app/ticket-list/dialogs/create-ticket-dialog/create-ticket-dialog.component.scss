@@ -1,0 +1,33 @@
+:host .add-container {
+    display: flex;
+    flex-direction: column;
+}
+
+:host .form-field-wrapper {
+    margin-bottom: 12px;
+}
+
+:host .add-container > * {
+    width: 100%;
+}
+
+:host .mat-mdc-dialog-content.mdc-dialog__content {
+    padding: 20px 24px;
+}
+
+:host .mat-mdc-dialog-title.mdc-dialog__title {
+    font-size: 24px;
+    padding: 5px 24px 5px;
+}
+
+:host .mat-mdc-form-field {
+    width: 100%;
+}
+
+:host mat-dialog-actions {
+    padding: 0px 24px 15px;    
+}
+
+:host .dialog-actions-icon {
+    font-size: 16px;
+}

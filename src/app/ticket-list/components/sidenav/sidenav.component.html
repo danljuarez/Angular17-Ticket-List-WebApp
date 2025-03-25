@@ -1,0 +1,24 @@
+<app-toolbar (toggleSidenav)="sidenav.toggle()">
+</app-toolbar>
+<mat-sidenav-container class="app-sidenav-container dark-theme">
+    <mat-sidenav #sidenav class="app-sidenav mat-elevation-z10"
+                          [opened]="!isScreenSmall"
+                          [fixedInViewport]="true"
+                          [mode]="isScreenSmall ? 'over' : 'side'">
+        <mat-nav-list>
+            <mat-list-item
+                *ngFor="let item of navItems"
+                [routerLink]="item.isDisabled ? null : ['/ticket-list', item.link]" 
+                [disabled]="item.isDisabled">
+                <mat-icon matListItemIcon svgIcon="{{item.icon}}"></mat-icon>
+                <div matListItemTitle>{{item.label}}</div>
+            </mat-list-item>
+        </mat-nav-list>
+    </mat-sidenav>
+
+    <div class="app-sidenav-content">
+        <div class="wrapper">
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+</mat-sidenav-container>

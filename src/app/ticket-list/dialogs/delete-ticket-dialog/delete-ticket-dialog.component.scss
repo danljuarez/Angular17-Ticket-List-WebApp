@@ -1,0 +1,12 @@
+:host .mat-mdc-dialog-title.mdc-dialog__title {
+    font-size: 24px;
+    padding-bottom: 0px;
+}
+
+:host .mat-mdc-dialog-content.mdc-dialog__content {
+    padding: 20px 24px;
+}
+
+:host mat-dialog-actions {
+    padding: 0px 24px 15px;    
+}

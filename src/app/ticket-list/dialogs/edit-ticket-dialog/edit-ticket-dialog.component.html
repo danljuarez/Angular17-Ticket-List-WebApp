@@ -1,0 +1,49 @@
+<h1 mat-dialog-title>Edit</h1>
+<mat-dialog-content>
+    <div class="edit-container">
+        <form [formGroup]="ticketEditForm">
+            <div class="form-field-wrapper">
+                <mat-form-field appearance="outline" subscriptSizing="dynamic">
+                    <mat-label>Event name</mat-label>
+                    <input matInput formControlName="eventName" required (focus)="onDateFocus('eventName')">
+                    <mat-error *ngIf="ticketEditForm.get('eventName')?.hasError('required')">Event name is required</mat-error>
+                    <mat-error *ngIf="ticketEditForm.get('eventName')?.hasError('minlength')">Event name must be at least 3 characters long</mat-error>
+                    <mat-error *ngIf="ticketEditForm.get('eventName')?.hasError('maxlength')">Event name must be no more than 50 characters long</mat-error>
+                </mat-form-field>
+            </div>
+            <div class="form-field-wrapper">
+                <mat-form-field appearance="outline" subscriptSizing="dynamic">
+                    <mat-label>Event description</mat-label>
+                    <input matInput formControlName="description" required (focus)="onDateFocus('description')">
+                    <mat-error *ngIf="ticketEditForm.get('description')?.hasError('required')">Event description is required</mat-error>
+                    <mat-error *ngIf="ticketEditForm.get('description')?.hasError('minlength')">Event description must be at least 3 characters long</mat-error>
+                    <mat-error *ngIf="ticketEditForm.get('description')?.hasError('maxlength')">Event description must be no more than 300 characters</mat-error>
+                </mat-form-field>
+            </div>
+            <div class="form-field-wrapper">
+                <mat-form-field appearance="outline" subscriptSizing="dynamic">
+                    <mat-label>Event date</mat-label>
+                    <input matInput formControlName="eventDate" [matDatepicker]="picker" placeholder="Enter a valid date" required (focus)="onDateFocus('eventDate')">
+                    <mat-hint>MM/DD/YYYY</mat-hint>
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                    @if (ticketEditForm.get('eventDate')?.hasError('required')) {
+                        <mat-error>Valid event date is required</mat-error>
+                    }
+                    @else if (ticketEditForm.get('eventDate')?.hasError('dateFormat')) {
+                        <mat-error>Invalid event date format</mat-error>
+                    }
+                </mat-form-field>
+            </div>
+        </form>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close cdkFocusInitial>
+        <mat-icon aria-hidden="false" aria-label="Cancel" class="dialog-actions-icon" svgIcon="close"></mat-icon>Cancel
+    </button>
+    <button mat-button (click)="onSubmit()" [disabled]="!ticketEditForm.valid || !hasChanges()">
+        <mat-icon aria-hidden="false" aria-label="Save" class="dialog-actions-icon">check</mat-icon>Save
+    </button>
+</mat-dialog-actions>
+

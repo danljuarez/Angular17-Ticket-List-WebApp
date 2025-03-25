@@ -1,0 +1,133 @@
+:host .mat-mdc-outlined-button {
+    padding: 5px;
+}
+
+:host .add-button-outline {
+    width: 100%;
+    text-align: right;
+    padding-bottom: 5px;
+
+    .add-button {
+        width: 135px;
+        color: green;
+    }
+}
+
+:host ::ng-deep .mat-mdc-form-field-subscript-wrapper.mat-mdc-form-field-bottom-align {
+    display: none;
+}
+
+:host .ticket-table {
+    width: 100%;
+
+    .mat-mdc-form-field {
+        font-size: 14px;
+        width: 100%;
+        height: 57px;
+    }
+    
+    .mat-column-id {
+        width: 5%;
+        border-right: 1px solid currentColor;
+        padding-right: 20px;
+        border-color: rgb(224, 224, 224);
+        text-align: center;
+    }
+
+    .edit-button {
+        width: 100px;
+        margin-right: 5px;
+
+        mat-icon {
+            color: blue;
+        }
+    }
+
+    .delete-button {
+        width: 100px;
+    }
+
+    .mat-column-name {
+        font-weight: 500;
+    }
+
+    .mat-cell {
+        padding-top: 20px;
+        padding-left: 20px;
+        font-size: 16px;
+    }
+
+    .mat-mdc-row .mat-mdc-cell {
+        border-bottom: 1px solid rgb(242, 242, 245);
+        border-top: 1px solid transparent;
+    }
+
+    .mat-mdc-row:hover .mat-mdc-cell {
+        border-color: rgb(224, 224, 224);
+        background-color: rgba(248, 248, 248, 0.795);
+    }
+
+    table tr th:nth-child(6),
+    table tr td:nth-child(6) {
+        width: 250px;
+    }
+
+    table tr th:nth-child(3),
+    table tr td:nth-child(3) {
+        width: 35%;
+    }
+   
+    @media screen and (max-width: 1150px) {
+        table tr th:nth-child(5),
+        table tr td:nth-child(5) {
+            display: none;
+        }
+    }
+
+    @media screen and (max-width: 940px) {
+        table tr th:nth-child(4),
+        table tr td:nth-child(4) {
+            display: none;
+        }
+
+        ::ng-deep .mat-mdc-paginator-page-size {
+            display: none;
+        }
+    }
+
+    @media screen and (max-width: 700px) {
+        table tr th:nth-child(1),
+        table tr td:nth-child(1) {
+            display: none;
+        }
+
+        .noDataFound {
+            display: inline-block !important;
+        }
+    }
+
+    @media screen and (max-width: 450px) {
+        table tr th:nth-child(3),
+        table tr td:nth-child(3) {
+            display: none;
+        }
+
+        table tr th:nth-child(6),
+        table tr td:nth-child(6) {
+            width: 40%;
+        }
+    }
+
+    @media screen and (max-width: 360px) {
+        ::ng-deep .mat-mdc-paginator-range-label {
+            display: none;
+        }
+    }
+
+    @media screen and (max-width: 278px) {
+        table tr th:nth-child(6),
+        table tr td:nth-child(6) {
+            display: none;
+        }
+    }
+}

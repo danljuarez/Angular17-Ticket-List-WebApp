@@ -1,0 +1,12 @@
+@import '@angular/material/prebuilt-themes/indigo-pink.css';
+
+.mat-mdc-dialog-container {
+    --mdc-dialog-container-shape: 30px;
+}
+
+.mdc-dialog__content {
+    padding-top: unset;
+}
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
