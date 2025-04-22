@@ -34,12 +34,12 @@ If discussed during an interview, I am available to provide detailed explanation
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.0.10.
 
-## This project works in conjunction with
+## This Project Works in Conjunction with
 - A [backend API](https://github.com/danljuarez/cSharp-RestAPI-NetCore-TicketList) (not included in this repository) that handles data storage and retrieval.
 - A [microservice](https://github.com/danljuarez/cSharp-Azure-Functions-AddTickets) (not included in this repository) that can optionally be used to import multiple tickets into the backend API using Azure Functions V4.
 
 
-## To run this project
+## To Run this Project
 - **Version compatibility**<br/>
 This webapp uses following compatible Angular tools version:
 
@@ -71,7 +71,7 @@ Run `ng build` to build the project. The build artifacts will be stored in the `
     ```
     **Note**: At this time, ignore the `[WARNING]` message.
 
-## Development server
+## Development Server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/` in your preferred browser. The application will automatically reload if you change any of the source files.
 
@@ -92,7 +92,7 @@ It will generate the following result in your browser:
 ![](./screenshots/screenshot-02.JPG)
 
 
-## Running unit tests
+## Running Unit Tests
 
 Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
 ```console
@@ -107,7 +107,7 @@ It will show following result:
 ![](./screenshots/screenshot-03.JPG)
 
 
-## Run test-coverage
+## Run Test-Coverage
 Run `ng test` to verify test coverage.
 ```console
 ng test --no-watch --code-coverage
@@ -120,7 +120,7 @@ Open `index.html` in your preferred browser to see the results:
 
 ![](./screenshots/screenshot-04.JPG)
 
-## Further help
+## Further Help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
 
