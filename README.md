@@ -1,46 +1,42 @@
-# Project Angular 17 - Ticket System UI Webapp
+# Project Angular 17 - Ticket List System UI Webapp
 #### Author: Daniel Juarez
 
-## Overview
-This is a UI project of a real-world implementation for a fully functional feature of an event ticket system.
+## Project Overview
+This UI project was developed in conjunction with a [backend API project](https://github.com/danljuarez/cSharp-RestAPI-NetCore-TicketList) (not included in this repository) to showcase the author's full-stack development experience with Angular and C# for technical interview purposes.
 
-The author developed this UI project and a [backend API project](https://github.com/danljuarez/cSharp-RestAPI-NetCore-TicketList) (not included in this repository) to provide technical interviewers with an introduction to the author's experience working with Angular and C# for full-stack implementations.
-
-The implementation of this Angular project aims to demonstrate approaches to:
+This implementation focuses on the core foundational features commonly found in a Angular project, including:
 
 **User interaction**
-- Creating a user-friendly interface for users to interact with the ticket system.
-- Implementing a responsive design to ensure the application works well on various devices and screen sizes.
-- Displaying and updating data in real-time.
-- Handling user input and validating data before submitting it to the backend API.
-- Implementing a filter function to filter tickets by name, description, date, and more.
-- Implementing column sort and pagination features provided by Angular Material.
+- Designing a user-friendly interface for interacting with a ticket list system.
+- Implementing a responsive layout to ensure compatibility across various devices and screen sizes.
+- Displaying and updating data in real time.
+- Enabling filtering functionality for tickets based on name, description, date, and other criteria using Angular Material.
+- Enabling column sorting and pagination using Angular Material.
 
 **Angular Best Practices**
-- Utilizing Angular's features to create a robust and maintainable application.
 - Following TypeScript best practices.
-- Using Angular CLI to scaffold the project and manage dependencies.
+- Using Angular CLI to scaffold the project and manage dependencies when required.
 - Using Angular Material for UI components.
 - Using Angular Router for routing.
 - Using Angular Services for data management.
 - Using Angular Observables for data streaming.
 - Using Angular Reactive Forms for data validation.
-- Using Angular Flex Layout for responsive design.
-- Using Angular Animations for visual effects.
 
 **Integration with backend API**
-- Integration with a backend API to fetch and update data.
-- Implementing API calls to create, read, update, and delete data.
+- Integration with a [backend API](https://github.com/danljuarez/cSharp-RestAPI-NetCore-TicketList) to fetch and update data.
+- Implementing services with API calls to create, read, update, and delete data.
 
 **For unit tests**
 - Implementing Isolated Unit Tests using Karma/Jasmine.
 - Implementing Code Coverage using Istanbul.
 
+If discussed during an interview, I am available to provide detailed explanations of these approaches, including the reasoning behind design choices and their practical advantages in real-world application development.
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.0.10.
 
 ## This project works in conjunction with
-- A [backend API](https://github.com/danljuarez/cSharp-RestAPI-NetCore-TicketList) (not included in this repository) that handles data storage and retrieval: [cSharp-RestAPI-NetCore-TicketList](https://github.com/danljuarez/cSharp-RestAPI-NetCore-TicketList)
-- A [microservice](https://github.com/danljuarez/cSharp-Azure-Functions-AddTickets) (not included in this repository) that can optionally be used to import multiple tickets into the backend API using Azure Functions V4: [cSharp-Azure-Functions-AddTickets](https://github.com/danljuarez/cSharp-Azure-Functions-AddTickets)
+- A [backend API](https://github.com/danljuarez/cSharp-RestAPI-NetCore-TicketList) (not included in this repository) that handles data storage and retrieval.
+- A [microservice](https://github.com/danljuarez/cSharp-Azure-Functions-AddTickets) (not included in this repository) that can optionally be used to import multiple tickets into the backend API using Azure Functions V4.
 
 
 ## To run this project
