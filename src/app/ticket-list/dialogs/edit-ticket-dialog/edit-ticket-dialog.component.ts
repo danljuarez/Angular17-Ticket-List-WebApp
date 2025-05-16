@@ -8,7 +8,7 @@ import { ITicket } from '../../models/ticket.interface.model';
 import { IPatchOperationRequest } from '../../models/patch-operation.interface.model';
 import { IUpdateTicketRequest } from '../../models/update-ticket.interface.model';
 import { TicketService } from '../../services/ticket.service';
-import { dateFormatValidator } from '../../utils/custom.form.validators';
+import { validateDateInMMDDYYYYFormat, preventInvalidKeystrokes } from '../../utils/custom.form.validators';
 
 @Component({
   selector: 'app-edit-ticket-dialog',
@@ -20,6 +20,9 @@ export class EditTicketDialogComponent implements OnInit, OnDestroy {
 
   ticketEditForm!: FormGroup;
   originalData: Object = {};
+
+  minDate: Date;
+  maxDate: Date;
 
   reloadTickets = new EventEmitter<void>();
 
@@ -43,6 +46,9 @@ export class EditTicketDialogComponent implements OnInit, OnDestroy {
           this.onSubmit();
         }
       });
+
+    this.minDate = new Date(1900, 1 - 1, 1);
+    this.maxDate = new Date(2100, 12 - 1, 31);
   }
 
   ngOnInit(): void {
@@ -54,7 +60,7 @@ export class EditTicketDialogComponent implements OnInit, OnDestroy {
     this.ticketEditForm = new FormGroup({
       eventName: new FormControl(this.data.eventName, [Validators.required, Validators.minLength(3), Validators.maxLength(50)]),
       description: new FormControl(this.data.description, [Validators.required, Validators.minLength(3), Validators.maxLength(300)]),
-      eventDate: new FormControl(this.data.eventDate, [Validators.required, dateFormatValidator()])
+      eventDate: new FormControl(this.data.eventDate)
     });
   }
 
@@ -86,11 +92,46 @@ export class EditTicketDialogComponent implements OnInit, OnDestroy {
     return JSON.stringify(this.ticketEditForm.value) !== JSON.stringify(this.originalData);
   }
 
-  onDateFocus(fieldName: string = 'eventDate'): void {
+  onFocus(fieldName: string = 'eventName'): void {
     this.ticketEditForm.get(fieldName)?.markAsTouched();
     this.ticketEditForm.get(fieldName)?.updateValueAndValidity();
   }
+
+  onDateFocus(value: string): void {
+    this.ticketEditForm.get('eventDate')?.markAsTouched();
+    this.customDateValidator(value);
+  }
+
+  onDateModelChange(value: string): void {
+    this.customDateValidator(value);
+  }
+
+  onDateChange(value: string): void {
+    this.customDateValidator(value);
+  }
+
+  onDateBlur(value: string): void {
+    this.ticketEditForm.get('eventDate')?.markAsTouched();
+    this.customDateValidator(value);
+  }
   
+  customDateValidator(value: string): void {
+    this.ticketEditForm.get('eventDate')?.setErrors(validateDateInMMDDYYYYFormat(value));
+  }
+
+  getEventDateErrorMessage(): string {
+    if (this.ticketEditForm.get('eventDate')?.hasError('required')) return 'Date is required';
+    if (this.ticketEditForm.get('eventDate')?.hasError('invalidDate')) return 'Invalid date format or value';
+    if (this.ticketEditForm.get('eventDate')?.hasError('outOfRange')) return 'Year must be between 1900 and 2100';
+    if (this.ticketEditForm.get('eventDate')?.hasError('pastDate')) return 'Past dates are not allowed';
+    if (this.ticketEditForm.get('eventDate')?.hasError('futureDate')) return 'Future dates are not allowed';
+    return '';
+  }
+
+  onDateKeyDown(e: KeyboardEvent): void {
+    preventInvalidKeystrokes(e);
+  }
+
   ngOnDestroy(): void {
     this.destroyed$.next();
     this.destroyed$.complete();

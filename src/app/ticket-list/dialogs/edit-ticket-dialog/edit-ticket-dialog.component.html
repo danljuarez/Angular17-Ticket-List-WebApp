@@ -5,7 +5,7 @@
             <div class="form-field-wrapper">
                 <mat-form-field appearance="outline" subscriptSizing="dynamic">
                     <mat-label>Event name</mat-label>
-                    <input matInput formControlName="eventName" required (focus)="onDateFocus('eventName')">
+                    <input matInput formControlName="eventName" required (focus)="onFocus()">
                     <mat-error *ngIf="ticketEditForm.get('eventName')?.hasError('required')">Event name is required</mat-error>
                     <mat-error *ngIf="ticketEditForm.get('eventName')?.hasError('minlength')">Event name must be at least 3 characters long</mat-error>
                     <mat-error *ngIf="ticketEditForm.get('eventName')?.hasError('maxlength')">Event name must be no more than 50 characters long</mat-error>
@@ -14,7 +14,7 @@
             <div class="form-field-wrapper">
                 <mat-form-field appearance="outline" subscriptSizing="dynamic">
                     <mat-label>Event description</mat-label>
-                    <input matInput formControlName="description" required (focus)="onDateFocus('description')">
+                    <input matInput formControlName="description" required (focus)="onFocus('description')">
                     <mat-error *ngIf="ticketEditForm.get('description')?.hasError('required')">Event description is required</mat-error>
                     <mat-error *ngIf="ticketEditForm.get('description')?.hasError('minlength')">Event description must be at least 3 characters long</mat-error>
                     <mat-error *ngIf="ticketEditForm.get('description')?.hasError('maxlength')">Event description must be no more than 300 characters</mat-error>
@@ -23,16 +23,25 @@
             <div class="form-field-wrapper">
                 <mat-form-field appearance="outline" subscriptSizing="dynamic">
                     <mat-label>Event date</mat-label>
-                    <input matInput formControlName="eventDate" [matDatepicker]="picker" placeholder="Enter a valid date" required (focus)="onDateFocus('eventDate')">
+                    <input matInput
+                           formControlName="eventDate"
+                           [matDatepicker]="picker"
+                           placeholder="Enter a valid date"
+                           required
+                           #dateInput
+                           [min]="minDate"
+                           [max]="maxDate"
+                           (ngModelChange)="onDateModelChange(dateInput.value)"
+                           (dateChange)="onDateChange(dateInput.value)"
+                           (focus)="onDateFocus(dateInput.value)"
+                           (blur)="onDateBlur(dateInput.value)"
+                           (keydown)="onDateKeyDown($event)">
                     <mat-hint>MM/DD/YYYY</mat-hint>
                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                     <mat-datepicker #picker></mat-datepicker>
-                    @if (ticketEditForm.get('eventDate')?.hasError('required')) {
-                        <mat-error>Valid event date is required</mat-error>
-                    }
-                    @else if (ticketEditForm.get('eventDate')?.hasError('dateFormat')) {
-                        <mat-error>Invalid event date format</mat-error>
-                    }
+                    <mat-error *ngIf="ticketEditForm.get('eventDate')?.invalid && (ticketEditForm.get('eventDate')?.touched)">
+                        {{ getEventDateErrorMessage() }}
+                    </mat-error>
                 </mat-form-field>
             </div>
         </form>
