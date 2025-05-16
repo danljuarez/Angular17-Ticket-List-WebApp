@@ -22,8 +22,8 @@ describe('CreateTicketDialogComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [CreateTicketDialogComponent],
       providers: [
-        { provide: MatDialogRef, useValue: { keydownEvents: () => keydownSubject.asObservable(), close: () => true   } },
-        { provide: TicketService, useValue: { createTicket: () => of({})} },
+        { provide: MatDialogRef, useValue: { keydownEvents: () => keydownSubject.asObservable(), close: () => true }},
+        { provide: TicketService, useValue: { createTicket: () => of({}) }},
         { provide: FormBuilder, useValue: { group: () => new FormGroup({}) }} ,
         { provide: MAT_DIALOG_DATA, useValue: {} }
       ],
@@ -132,7 +132,7 @@ describe('CreateTicketDialogComponent', () => {
       const ticket: ICreateTicketRequest = { 
         eventName: 'Ticket 1',
         description: 'Ticket Description 1',
-        eventDate: '2024-08-10'
+        eventDate: '10/08/2024'
       };
       spyOn(service, 'createTicket').and.returnValue(of(ticket));
       spyOn(dialogRef, 'close').and.returnValue(true);
@@ -172,7 +172,7 @@ describe('CreateTicketDialogComponent', () => {
       const ticket: ICreateTicketRequest = { 
         eventName: 'Ticket 1',
         description: 'Ticket Description 1',
-        eventDate: '2024-08-10'
+        eventDate: '10/08/2024'
       };
       spyOn(service, 'createTicket').and.returnValue(of(ticket));
       spyOn(component.reloadTickets, 'emit');
@@ -206,6 +206,218 @@ describe('CreateTicketDialogComponent', () => {
       
       // Assert
       expect(console.error).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('onDateFocus()', () => {
+    it('should mark the form control as touched and update its validity', () => {
+      // Arrange
+      component.ticketAddForm = new FormGroup({
+        eventDate: new FormControl('10/08/2024')
+      });
+      const eventDateControl = component.ticketAddForm.get('eventDate');
+      expect(eventDateControl?.touched).toBe(false);
+
+      // Act
+      component.onDateFocus(eventDateControl?.value);
+
+      // Assert
+      expect(eventDateControl?.touched).toBe(true);
+      expect(eventDateControl?.valid).toBe(true);
+    });
+
+    it('should not throw an error if the form control is null or undefined', () => {
+      // Arrange
+      component.ticketAddForm = new FormGroup({});
+
+      // Act & Assert
+      expect(() => component.onDateFocus('')).not.toThrow();
+    });
+
+    it('should mark the form control as touched and as invalid', () => {
+      // Arrange
+      component.ticketAddForm = new FormGroup({
+        eventDate: new FormControl('10-08-2024')
+      });
+      const eventDateControl = component.ticketAddForm.get('eventDate');
+      expect(eventDateControl?.touched).toBe(false);
+
+      // Act
+      component.onDateFocus(eventDateControl?.value);
+
+      // Assert
+      expect(eventDateControl?.touched).toBe(true);
+      expect(eventDateControl?.valid).toBe(false);
+    });
+  });
+
+  describe('onDateModelChange()', () => {
+    it('should ensure customDateValidator has been called', () => {
+      // Arrange
+      const value = '10/08/2024';
+      const customDateValidatorSpy = spyOn(component, 'customDateValidator');
+
+      // Act
+      component.onDateModelChange(value);
+
+      // Assert
+      expect(customDateValidatorSpy).toHaveBeenCalledTimes(1);
+      expect(customDateValidatorSpy).toHaveBeenCalledWith(value);
+    });
+  });
+
+  describe('onDateChange()', () => {
+    it('should ensure customDateValidator has been called', () => {
+      // Arrange
+      const value = '10/08/2024';
+      const customDateValidatorSpy = spyOn(component, 'customDateValidator');
+
+      // Act
+      component.onDateChange(value);
+
+      // Assert
+      expect(customDateValidatorSpy).toHaveBeenCalledTimes(1);
+      expect(customDateValidatorSpy).toHaveBeenCalledWith(value);
+    });
+  });
+
+  describe('onDateBlur()', () => {
+    it('should mark eventDate as touched', () => {
+      // Arrange
+      component.ticketAddForm = new FormGroup({
+        eventDate: new FormControl('')
+      });
+      const value = '10/08/2024';
+      const eventDateControl = component.ticketAddForm.get('eventDate');
+      expect(eventDateControl?.touched).toBe(false);
+
+      // Act
+      component.onDateBlur(value);
+
+      // Assert
+      expect(eventDateControl?.touched).toBe(true);
+    });
+
+    it('should call customDateValidator', () => {
+      // Arrange
+      component.ticketAddForm = new FormGroup({
+        eventDate: new FormControl('')
+      });
+      const value = '10/08/2024';
+      const customDateValidatorSpy = spyOn(component, 'customDateValidator');
+
+      // Act
+      component.onDateBlur(value);
+
+      // Assert
+      expect(customDateValidatorSpy).toHaveBeenCalledTimes(1);
+      expect(customDateValidatorSpy).toHaveBeenCalledWith(value);
+    });
+  });
+
+  describe('customDateValidator()', () => {
+    it('should set errors to null on eventDate when date format is valid', () => {
+      // Arrange
+      component.ticketAddForm = new FormGroup({
+        eventDate: new FormControl('')
+      });
+      const value = '10/08/2024';
+      const expectedErrorValue = null;
+
+      // Act
+      component.customDateValidator(value);
+
+      // Assert
+      expect(component.ticketAddForm.get('eventDate')?.errors).toEqual(expectedErrorValue);
+    });
+
+    it('should set errors to invalidDate on eventDate when date format is invalid', () => {
+      // Arrange
+      component.ticketAddForm = new FormGroup({
+        eventDate: new FormControl('')
+      });
+      const value = '45/08/2024';
+      const expectedErrorValue = { invalidDate: true };
+
+      // Act
+      component.customDateValidator(value);
+
+      // Assert
+      expect(component.ticketAddForm.get('eventDate')?.errors).toEqual(expectedErrorValue);
+    });
+  });
+
+  describe('getEventDateErrorMessage()', () => {
+    beforeEach(() => {
+      component.ticketAddForm = new FormGroup({
+        eventDate: new FormControl('')
+      });
+    });
+
+    it('should return error message for required error', () => {
+      // Arrange
+      component.ticketAddForm.get('eventDate')?.setErrors({ required: true });
+
+      // Act
+      const errorMessage = component.getEventDateErrorMessage();
+
+      // Assert
+      expect(errorMessage).toBe('Date is required');
+    });
+
+    it('should return error message for invalidDate error', () => {
+      // Arrange
+      component.ticketAddForm.get('eventDate')?.setErrors({ invalidDate: true });
+
+      // Act
+      const errorMessage = component.getEventDateErrorMessage();
+
+      // Assert
+      expect(errorMessage).toBe('Invalid date format or value');
+    });
+
+    it('should return error message for outOfRange error', () => {
+      // Arrange
+      component.ticketAddForm.get('eventDate')?.setErrors({ outOfRange: true });
+
+      // Act
+      const errorMessage = component.getEventDateErrorMessage();
+
+      // Assert
+      expect(errorMessage).toBe('Year must be between 1900 and 2100');
+    });
+
+    it('should return error message for pastDate error', () => {
+      // Arrange
+      component.ticketAddForm.get('eventDate')?.setErrors({ pastDate: true });
+
+      // Act
+      const errorMessage = component.getEventDateErrorMessage();
+
+      // Assert
+      expect(errorMessage).toBe('Past dates are not allowed');
+    });
+
+    it('should return error message for futureDate error', () => {
+      // Arrange
+      component.ticketAddForm.get('eventDate')?.setErrors({ futureDate: true });
+
+      // Act
+      const errorMessage = component.getEventDateErrorMessage();
+
+      // Assert
+      expect(errorMessage).toBe('Future dates are not allowed');
+    });
+
+    it('should return empty string for no errors', () => {
+      // Arrange
+      component.ticketAddForm.get('eventDate')?.setErrors(null);
+
+      // Act
+      const errorMessage = component.getEventDateErrorMessage();
+
+      // Assert
+      expect(errorMessage).toBe('');
     });
   });
 

@@ -23,16 +23,25 @@
             <div class="form-field-wrapper">
                 <mat-form-field appearance="outline" subscriptSizing="dynamic">
                     <mat-label>Event date</mat-label>
-                    <input matInput formControlName="eventDate" [matDatepicker]="picker" placeholder="MM/DD/YYYY">
+                    <input matInput
+                           formControlName="eventDate"
+                           [matDatepicker]="picker"
+                           placeholder="MM/DD/YYYY"
+                           required
+                           #dateInput
+                           [min]="minDate"
+                           [max]="maxDate"
+                           (ngModelChange)="onDateModelChange(dateInput.value)"
+                           (dateChange)="onDateChange(dateInput.value)"
+                           (focus)="onDateFocus(dateInput.value)"
+                           (blur)="onDateBlur(dateInput.value)"
+                           (keydown)="onDateKeyDown($event)">
                     <mat-hint>MM/DD/YYYY</mat-hint>
                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                     <mat-datepicker #picker></mat-datepicker>
-                    @if (ticketAddForm.get('eventDate')?.hasError('required')) {
-                        <mat-error>Valid event date is required</mat-error>
-                    }
-                    @else if (ticketAddForm.get('eventDate')?.hasError('dateFormat')) {
-                        <mat-error>Invalid event date format</mat-error>
-                    }
+                    <mat-error *ngIf="ticketAddForm.get('eventDate')?.invalid && (ticketAddForm.get('eventDate')?.touched)">
+                        {{ getEventDateErrorMessage() }}
+                    </mat-error>
                 </mat-form-field>
             </div>
         </form>

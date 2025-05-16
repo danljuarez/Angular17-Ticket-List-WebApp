@@ -4,7 +4,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { Subject, takeUntil } from 'rxjs';
 
 import { TicketService } from '../../services/ticket.service';
-import { dateFormatValidator } from '../../utils/custom.form.validators';
+import { validateDateInMMDDYYYYFormat, preventInvalidKeystrokes } from '../../utils/custom.form.validators';
 
 @Component({
   selector: 'app-create-ticket-dialog',
@@ -15,6 +15,9 @@ export class CreateTicketDialogComponent implements OnInit, OnDestroy {
   private destroyed$ = new Subject<void>();
 
   ticketAddForm!: FormGroup;
+
+  minDate: Date;
+  maxDate: Date;
 
   reloadTickets = new EventEmitter<void>();
 
@@ -38,6 +41,9 @@ export class CreateTicketDialogComponent implements OnInit, OnDestroy {
           this.onSubmit();
         }
       });
+
+    this.minDate = new Date(1900, 1 - 1, 1);
+    this.maxDate = new Date(2100, 12 - 1, 31);
   }
 
   ngOnInit(): void {
@@ -48,7 +54,7 @@ export class CreateTicketDialogComponent implements OnInit, OnDestroy {
     this.ticketAddForm = this.fb.group({
       eventName: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]),
       description: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(300)]),
-      eventDate: new FormControl('', [Validators.required, dateFormatValidator()])
+      eventDate: new FormControl('')
     });
   }
 
@@ -65,6 +71,41 @@ export class CreateTicketDialogComponent implements OnInit, OnDestroy {
 
       this.dialogRef.close();
     }
+  }
+
+  onDateFocus(value: string): void {
+    this.ticketAddForm.get('eventDate')?.markAsTouched();
+    this.customDateValidator(value);
+  }
+
+  onDateModelChange(value: string): void {
+    this.customDateValidator(value);
+  }
+
+  onDateChange(value: string): void {
+    this.customDateValidator(value);
+  }
+
+  onDateBlur(value: string): void {
+    this.ticketAddForm.get('eventDate')?.markAsTouched();
+    this.customDateValidator(value);
+  }
+
+  customDateValidator(value: string): void {
+    this.ticketAddForm.get('eventDate')?.setErrors(validateDateInMMDDYYYYFormat(value));
+  }
+
+  getEventDateErrorMessage(): string {
+    if (this.ticketAddForm.get('eventDate')?.hasError('required')) return 'Date is required';
+    if (this.ticketAddForm.get('eventDate')?.hasError('invalidDate')) return 'Invalid date format or value';
+    if (this.ticketAddForm.get('eventDate')?.hasError('outOfRange')) return 'Year must be between 1900 and 2100';
+    if (this.ticketAddForm.get('eventDate')?.hasError('pastDate')) return 'Past dates are not allowed';
+    if (this.ticketAddForm.get('eventDate')?.hasError('futureDate')) return 'Future dates are not allowed';
+    return '';
+  }
+
+  onDateKeyDown(e: KeyboardEvent): void {
+    preventInvalidKeystrokes(e);
   }
 
   ngOnDestroy(): void {
